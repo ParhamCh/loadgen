@@ -3,9 +3,16 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 )
 
 func main() {
+	// Read port from environment variable
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default port if not set
+	}
+
 	// Define handler for root path
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Set content type to text/plain
@@ -14,9 +21,11 @@ func main() {
 		fmt.Fprintln(w, "hello api")
 	})
 
-	// Start HTTP server on port 8080
-	fmt.Println("Server is running on http://localhost:8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	// Start HTTP server
+	addr := fmt.Sprintf(":%s", port)
+	fmt.Printf("Server is running on http://localhost%s\n", addr)
+
+	if err := http.ListenAndServe(addr, nil); err != nil {
 		fmt.Println("Error starting server:", err)
 	}
 }
