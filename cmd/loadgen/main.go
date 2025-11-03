@@ -2,11 +2,20 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Load .env file from project root
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Printf("Warning: could not load .env file: %v", err)
+	}
+
 	// Read port from environment variable
 	port := os.Getenv("PORT")
 	if port == "" {
