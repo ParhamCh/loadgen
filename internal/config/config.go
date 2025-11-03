@@ -2,11 +2,8 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
-	"path/filepath"
 	"strconv"
-	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -21,7 +18,7 @@ func (c *Config) Address() string { return ":" + c.Port }
 
 // Load attempts to read configuration from environment variables.
 // It loads a .env file if present (from common locations) and applies defaults.
-func Load() (*Config, error) {
+func Load() (Config, error) {
 	// Load .env from project root; ignore error (Docker may inject envs).
 	_ = godotenv.Load(".env")
 
@@ -36,5 +33,3 @@ func Load() (*Config, error) {
 	return Config{Port: port}, nil
 }
 
-// Small helper for server timeouts
-func DefaultServerMux() *http.ServeMux { return http.NewServeMux() }
