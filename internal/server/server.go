@@ -1,10 +1,11 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/ParhamCh/loadgen/internal/handler"
 )
 
 // Options holds HTTP server configuration such as address and timeouts.
@@ -58,20 +59,11 @@ func Start(srv *http.Server) error {
 // registerRoutes wires the base routes. In step 3, move handlers to internal/handler.
 func registerRoutes(mux *http.ServeMux) {
 	// Root: returns "hello api"
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprintln(w, "hello api")
-	})
-
+	mux.HandleFunc("/", handler.Root)
 	// Liveness probe
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-	})
-
-	// Readiness probe (for now, same as healthz; can be extended later)
-	mux.HandleFunc("/readyz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-	})
+	mux.HandleFunc("/healthz", handler.Healthz)
+	// Readiness probe
+	mux.HandleFunc("/readyz", handler.Readyz)
 }
 
 // loggingMiddleware is a tiny access log; can be swapped with structured logging later.
