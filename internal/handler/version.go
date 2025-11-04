@@ -23,4 +23,3 @@ func Version(w http.ResponseWriter, r *http.Request) {
 		BuiltAt: build.BuiltAt,
 	})
 }
-

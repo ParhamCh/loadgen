@@ -11,4 +11,3 @@ func Healthz(w http.ResponseWriter, r *http.Request) {
 func Readyz(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
-

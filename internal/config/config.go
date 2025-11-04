@@ -10,7 +10,7 @@ import (
 
 // Config holds application configuration loaded from environment.
 type Config struct {
-	Port string 	// Port to listen on for HTTP server
+	Port string // Port to listen on for HTTP server
 }
 
 // Address returns the address string for net/http server, e.g., ":8080".
@@ -25,11 +25,10 @@ func Load() (Config, error) {
 	// Validate and load PORT
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"	// default port
+		port = "8080" // default port
 	}
 	if n, err := strconv.Atoi(port); err != nil || n < 1 || n > 65535 {
 		return Config{}, fmt.Errorf("invalid PORT: %q", port)
 	}
 	return Config{Port: port}, nil
 }
-
