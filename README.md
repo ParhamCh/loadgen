@@ -78,7 +78,3 @@ docker run --rm -p 8080:8080 -e PORT=8080 parhamch/loadgen:v0.1.0
 
 🛠 Built with **Go 1.22** — optimized for edge and containerized environments.
 📦 Perfect base for custom workload generators or API performance testing.
-
-```
-
----
