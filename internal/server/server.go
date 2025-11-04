@@ -64,6 +64,8 @@ func registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/healthz", handler.Healthz)
 	// Readiness probe
 	mux.HandleFunc("/readyz", handler.Readyz)
+	// Version info
+	mux.HandleFunc("/version", handler.Version)
 }
 
 // loggingMiddleware is a tiny access log; can be swapped with structured logging later.
