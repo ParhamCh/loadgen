@@ -31,12 +31,13 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH:-amd64} GOARM= \
 
 # --- Runtime stage ---
 FROM alpine:3.20
-# If you call external HTTPS endpoints, uncomment certs:
-# RUN apk add --no-cache ca-certificates
 WORKDIR /app
 COPY --from=build /out/loadgen /usr/local/bin/loadgen
 
+# Default (can be overridden by --env-file or -e
+ARG PORT=8080
+ENV PORT=${PORT}
+
 EXPOSE 8080
-ENV PORT=8080
 ENTRYPOINT ["/usr/local/bin/loadgen"]
 
