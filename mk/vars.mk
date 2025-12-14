@@ -12,7 +12,7 @@ CMD_PATH    ?= ./cmd/$(SERVICE)
 BINARY      ?= $(BUILD_DIR)/$(SERVICE)
 
 IMAGE_NAME  ?= parhamch/$(SERVICE)
-PLATFORM    ?= linux/arm64
+PLATFORM    ?= linux/amd64
 
 DOCKER      ?= docker
 

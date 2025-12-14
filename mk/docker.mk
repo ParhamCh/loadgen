@@ -16,10 +16,10 @@ docker-run:
 	@echo "→ Running Docker container on (PORT=$(PORT))..."
 	@if [ -f .env ]; then \
 	  echo "    using --env-file .env"; \
-	  $(DOCKER) run --rm -p $(PORT):$(PORT) --env-file .env $(IMAGE_NAME):$(VERSION) \
+	  $(DOCKER) run --rm -it -p $(PORT):$(PORT) --env-file .env $(IMAGE_NAME):$(VERSION); \
 	else \
 	  echo "    .env not found; using -e PORT=$(PORT)"; \
-	  $(DOCKER) run --rm -p $(PORT):$(PORT) -e PORT=$(PORT) $(IMAGE_NAME):$(VERSION); \
+	  $(DOCKER) run --rm -it -p $(PORT):$(PORT) -e PORT=$(PORT) $(IMAGE_NAME):$(VERSION); \
 	fi
 
 docker-push:
