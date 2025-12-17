@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: loadgen
+  namespace: loadgen
+  labels:
+    app: loadgen
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    # Optional TLS automation with cert-manager:
+    # - Set to your ClusterIssuer name, or remove if you manage TLS manually.
+    cert-manager.io/cluster-issuer: your-ca-name
+spec:
+  # Ensure this matches your IngressClass (kubectl get ingressclass).
+  ingressClassName: nginx
+  # Optional TLS (recommended). Remove the whole "tls:" block for HTTP-only.
+  tls:
+    - hosts:
+        # Change to your domain.
+        - loadgen.example.com
+      # Secret will be created by cert-manager (if configured) or manually.
+      secretName: loadgen-tls
+  rules:
+    # Change to your domain.
+    - host: loadgen.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: loadgen
+                port:
+                  number: 80
+                  
