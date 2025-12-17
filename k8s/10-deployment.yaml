@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadgen
+  namespace: loadgen
+  labels:
+    app: loadgen
+spec:
+  # Scale the number of replicas as needed.
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: loadgen
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: loadgen
+    spec:
+      # Optional: restrict scheduling to nodes with this label.
+      # Remove this block if your cluster does not use it.
+      nodeSelector:
+        role: workload
+      containers:
+        - name: loadgen
+          # Change image/tag for your releases.
+          image: parhamch/loadgen:v0.1.0
+          imagePullPolicy: IfNotPresent
+          env:
+            # Application listens on this port inside the container.
+            - name: PORT
+              value: "8080"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          # Tune these based on your cluster and expected load.
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+
